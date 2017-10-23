@@ -1,6 +1,7 @@
-#include <iostream>
+#include "Engine/Engine.h"
 
 int main() {
-    std::cout << "HI!\n";
+    Engine engine;
+    engine.update();
     return 0;
 }
