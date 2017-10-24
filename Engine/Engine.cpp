@@ -7,6 +7,7 @@ Engine::Engine(const char* name) {
     } else {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                     800, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
         if(m_window == nullptr) {
@@ -26,9 +27,13 @@ void Engine::update() {
         while(SDL_PollEvent(&event)) {
             if(event.type == SDL_QUIT) run = false;
         }
-        glClear (GL_COLOR_BUFFER_BIT);
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.0, 0.0, 0.0, 1.0);
         SDL_GL_SwapWindow(m_window);
+        GLenum error;
+        while((error = glGetError()) != GL_NO_ERROR) {
+            SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Opengl error: %i", error);
+        }
     }
 }
 
