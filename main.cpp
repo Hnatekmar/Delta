@@ -1,7 +1,7 @@
 #include "Engine/Engine.h"
 
 int main() {
-    Engine engine;
+    Engine engine("Spacer");
     engine.update();
     return 0;
 }
