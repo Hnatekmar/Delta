@@ -11,10 +11,11 @@
 class Cube: public IDrawable {
     GLuint m_vbo;
     GLuint m_shaderProgram;
+    GLuint m_positionAttrib;
     static constexpr GLfloat s_data[] = {
-            0.0f, 0.0f, 1.0f,
-            0.5f, 1.0f, 1.0f,
-            1.0f, 0.0f, 1.0f
+            0.0f, 0.0f, 0.0f,
+            0.5f, 1.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
     };
 public:
     Cube();

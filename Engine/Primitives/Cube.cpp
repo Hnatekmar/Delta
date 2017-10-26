@@ -2,43 +2,35 @@
 // Created by martin on 24.10.17.
 //
 
+#include <iostream>
 #include "Cube.h"
+#include "../Shader.h"
 
 Cube::Cube(): m_vbo(0)
 {
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(m_vbo, sizeof(s_data), s_data, GL_STATIC_DRAW);
-    GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
-    const GLchar* vertexSource =
-            "#version 120\n"
-            "layout(location = 0) in vec3 pos;"
-            "void main() {\n"
-            "   gl_Position = vec4(pos, 1.0);"
-            "}\n";
-    GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    const GLchar* fragmentSource =
-            "#version 120\n"
-            "out vec4 color;"
-            "void main() {\n"
-            "   gl_FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);"
-            "}\n";
-    glShaderSource(vertex, 1, &vertexSource, nullptr);
-    glShaderSource(fragment, 1, &fragmentSource, nullptr);
-    glCompileShader(vertex);
-    glCompileShader(fragment);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(s_data), s_data, GL_STATIC_DRAW);
     m_shaderProgram = glCreateProgram();
+    auto vertex = compileShader(GL_VERTEX_SHADER, "default.vert");
+    auto fragment = compileShader(GL_FRAGMENT_SHADER, "default.frag");
     glAttachShader(m_shaderProgram, vertex);
     glAttachShader(m_shaderProgram, fragment);
     glLinkProgram(m_shaderProgram);
+    GLint success;
+    glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &success);
+    glDeleteShader(vertex);
+    glDeleteShader(fragment);
     glUseProgram(m_shaderProgram);
+    GLint positionAttrib = glGetAttribLocation(m_shaderProgram, "position");
+    m_positionAttrib = positionAttrib;
 }
 
 void Cube::draw() {
-    glUseProgram(m_shaderProgram);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glEnableVertexAttribArray(0);
-    glVertexPointer(3, GL_FLOAT, GL_FALSE, nullptr);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 1);
-    glDisableVertexAttribArray(0);
+    glVertexAttribPointer(m_positionAttrib, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(m_positionAttrib);
+    glUseProgram(m_shaderProgram);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDisableVertexAttribArray(m_positionAttrib);
 }
