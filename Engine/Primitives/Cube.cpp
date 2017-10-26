@@ -24,11 +24,14 @@ Cube::Cube(): m_vbo(0)
     glUseProgram(m_shaderProgram);
     GLint positionAttrib = glGetAttribLocation(m_shaderProgram, "position");
     m_positionAttrib = positionAttrib;
+    m_transformMatrix = glGetUniformLocation(m_shaderProgram, "transform");
 }
 
-void Cube::draw() {
+
+void Cube::draw(const glm::mat4 &transform) {
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glVertexAttribPointer(m_positionAttrib, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glUniformMatrix4fv(m_transformMatrix, 1, GL_FALSE, &transform[0][0]);
     glEnableVertexAttribArray(m_positionAttrib);
     glUseProgram(m_shaderProgram);
     glDrawArrays(GL_TRIANGLES, 0, 3);
