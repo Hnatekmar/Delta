@@ -54,12 +54,8 @@ void Engine::update() {
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glm::mat4 mvp = projection * view * glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         cube.draw(mvp); //* glm::translate(glm::mat4(), glm::vec3(i, 0, 0)));
-        GLenum error;
-        while((error = glGetError()) != GL_NO_ERROR) {
-            std::cout << error << std::endl;
-            SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Opengl error: %i", error);
-        }
         SDL_GL_SwapWindow(m_window);
+        HANDLE_GL_ERRORS()
     }
 }
 
