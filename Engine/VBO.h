@@ -7,6 +7,7 @@
 
 #include <GL/glew.h>
 #include <list>
+#include "Exceptions/EngineException.h"
 
 /**
  * @brief Obal nad vbo. Jeho hlavní výhoda je, že se díky RAII postará o uvolnění bufferu
@@ -20,6 +21,7 @@ public:
         glGenBuffers(1, &m_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
         glBufferData(GL_ARRAY_BUFFER, size, data, usagePattern);
+        HANDLE_GL_ERRORS()
     }
 
     /**
