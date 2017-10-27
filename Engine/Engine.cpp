@@ -46,13 +46,25 @@ void Engine::update() {
     );
     Cube cube;
     bool run = true;
+    float i = 0.0f;
+    auto previousFrameTimestamp = SDL_GetTicks();
+    glEnable(GL_DEPTH_TEST);
     while(run) {
         while(SDL_PollEvent(&event)) {
             if(event.type == SDL_QUIT) run = false;
         }
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.0, 0.0, 0.0, 1.0);
-        glm::mat4 mvp = projection * view * glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        auto current = SDL_GetTicks();
+        auto delta = current - previousFrameTimestamp;
+        previousFrameTimestamp = current;
+        i += 0.1f * (delta / 1000.0f);
+        if(i > 360.0f) i = 0.0f;
+        float radius = 3.0f;
+        view = glm::lookAt(glm::vec3(cos(i) * radius, 0.0f, sin(i) * radius),
+                           glm::vec3(0.0f, 0.0f, 0.0f),
+                           glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 mvp = projection * view * glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, 0.0f, 0.0f));
         cube.draw(mvp); //* glm::translate(glm::mat4(), glm::vec3(i, 0, 0)));
         SDL_GL_SwapWindow(m_window);
         HANDLE_GL_ERRORS()
