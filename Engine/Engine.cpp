@@ -52,10 +52,8 @@ void Engine::update() {
         }
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.0, 0.0, 0.0, 1.0);
-        for(float i = -1.0f; i < 2.0f; i += 0.5f) {
-            glm::mat4 mvp = projection * view * glm::translate(glm::mat4(1.0f), glm::vec3(i, 0.0f, 0.0f));
-            cube.draw(mvp); //* glm::translate(glm::mat4(), glm::vec3(i, 0, 0)));
-        }
+        glm::mat4 mvp = projection * view * glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        cube.draw(mvp); //* glm::translate(glm::mat4(), glm::vec3(i, 0, 0)));
         GLenum error;
         while((error = glGetError()) != GL_NO_ERROR) {
             std::cout << error << std::endl;
