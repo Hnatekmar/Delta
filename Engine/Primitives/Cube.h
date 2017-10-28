@@ -9,16 +9,18 @@
 #include "../IDrawable.h"
 #include "../VBO.h"
 
+struct Vertex {
+    glm::vec4 position;
+    glm::vec4 color;
+};
+
+
 class Cube: public IDrawable {
     GLuint m_shaderProgram;
     GLuint m_positionAttrib;
+    GLuint m_colorAttrib;
     GLuint m_transformMatrix;
-    static constexpr GLfloat s_data[] = {
-            0.0f, 0.0f, 0.0f,
-            0.5f, 1.0f, 0.0f,
-            1.0f, 0.0f, 0.0f,
-    };
-    VBO<GLfloat> m_vbo;
+    VBO<Vertex> m_vbo;
 public:
     Cube();
 

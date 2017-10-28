@@ -58,10 +58,10 @@ void Engine::update() {
         auto current = SDL_GetTicks();
         auto delta = current - previousFrameTimestamp;
         previousFrameTimestamp = current;
-        i += 0.1f * (delta / 1000.0f);
+        i += 0.5f * (delta / 1000.0f);
         if(i > 360.0f) i = 0.0f;
-        float radius = 3.0f;
-        view = glm::lookAt(glm::vec3(cos(i) * radius, 0.0f, sin(i) * radius),
+        float radius = 5.0f;
+        view = glm::lookAt(glm::vec3(cos(i) * radius, 5.0f, sin(i) * radius),
                            glm::vec3(0.0f, 0.0f, 0.0f),
                            glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 mvp = projection * view * glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, 0.0f, 0.0f));
