@@ -39,6 +39,10 @@ public:
         glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     }
 
+    void unbind() {
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
     ~VBO() {
         glDeleteBuffers(1, &m_vbo);
     }

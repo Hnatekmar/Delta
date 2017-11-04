@@ -70,5 +70,6 @@ void Cube::draw(const glm::mat4 &transform) {
     glDrawArrays(GL_TRIANGLE_STRIP, m_vbo.count() - 4, 4);
     glDisableVertexAttribArray(m_colorAttrib);
     glDisableVertexAttribArray(m_positionAttrib);
+    m_vbo.unbind();
     HANDLE_GL_ERRORS()
 }
