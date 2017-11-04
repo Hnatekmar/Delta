@@ -6,15 +6,16 @@
 #define PROJECT_ENTITYMANAGER_H
 
 #include <vector>
+#include <memory>
 #include "Entity.h"
 
 class EntityManager {
-    std::vector<Entity> m_entities;
+    std::vector<std::shared_ptr<Entity> > m_entities;
 public:
-    void addEntity(Entity entity);
+    void addEntity(std::shared_ptr<Entity> entity);
     void update(double delta);
-    Entity& getEntityById(std::size_t id);
-    std::vector<Entity> getEntityByType(std::string id);
+    std::weak_ptr<Entity> getEntityById(std::size_t id);
+    std::vector<std::weak_ptr<Entity>> getEntityByType(std::string id);
 };
 
 

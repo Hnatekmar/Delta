@@ -15,6 +15,6 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Shaders/default.frag
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Shaders/default.vert
         DESTINATION ${CMAKE_BINARY_DIR})
 
-set(SOURCE_FILES Engine.cpp Engine.h IDrawable.h Primitives/Cube.cpp Primitives/Cube.h Shader.cpp Shader.h VBO.h Exceptions/EngineException.cpp Exceptions/EngineException.h Entity.h EntityManager.cpp EntityManager.h)
+set(SOURCE_FILES Engine.cpp Engine.h IDrawable.h Primitives/Cube.cpp Primitives/Cube.h Shader.cpp Shader.h VBO.h Exceptions/EngineException.cpp Exceptions/EngineException.h Entity.h EntityManager.cpp EntityManager.h Entity.cpp)
 add_library(Engine ${SOURCE_FILES})
 target_link_libraries(Engine ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${SDL2_LIBRARIES} ${GLM_LIBRARIES})

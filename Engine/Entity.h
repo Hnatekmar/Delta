@@ -8,7 +8,7 @@
 #include <string>
 
 class Entity {
-    static std::size_t s_lastId = 0;
+    static std::size_t s_lastId;
     std::size_t m_id;
     std::string m_type;
 public:
@@ -25,5 +25,6 @@ public:
 
     virtual void update(double delta) = 0;
 };
+
 
 #endif //PROJECT_ENTITY_H
