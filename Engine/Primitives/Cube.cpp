@@ -41,34 +41,34 @@ Cube::Cube(): m_vbo(data, sizeof(data), GL_STATIC_DRAW)
     auto fragment = compileShader(GL_FRAGMENT_SHADER, "default.frag");
     glAttachShader(m_shaderProgram, vertex);
     glAttachShader(m_shaderProgram, fragment);
-    glLinkProgram(m_shaderProgram);
-    GLint success;
-    glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &success);
     glDeleteShader(vertex);
     glDeleteShader(fragment);
-    glUseProgram(m_shaderProgram);
-    GLint positionAttrib = glGetAttribLocation(m_shaderProgram, "position");
-    assert(positionAttrib != -1);
-    GLint colorAttrib = glGetAttribLocation(m_shaderProgram, "color");
-    assert(colorAttrib != -1);
-    m_colorAttrib = static_cast<GLuint>(colorAttrib);
-    m_positionAttrib = static_cast<GLuint>(positionAttrib);
-    m_transformMatrix = static_cast<GLuint>(glGetUniformLocation(m_shaderProgram, "transform"));
+    glLinkProgram(m_shaderProgram);
+    GLint position = glGetAttribLocation(m_shaderProgram, "position");
+    assert(position != -1);
+    GLint color = glGetAttribLocation(m_shaderProgram, "solidColor");
+    assert(color != -1);
+    GLint transform = glGetUniformLocation(m_shaderProgram, "transform");
+    assert(transform != -1);
+    m_positionAttrib = static_cast<GLuint>(position);
+    m_colorAttrib = static_cast<GLuint>(color);
+    m_transformMatrix = static_cast<GLuint>(transform);
     HANDLE_GL_ERRORS()
 }
 
 
 void Cube::draw(const glm::mat4 &transform) {
     m_vbo.bind();
+    glUseProgram(m_shaderProgram);
+    glEnableVertexAttribArray(m_positionAttrib);
+    glEnableVertexAttribArray(m_colorAttrib);
     glVertexAttribPointer(m_positionAttrib, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr);
     glVertexAttribPointer(m_colorAttrib, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)sizeof(glm::vec4));
     glUniformMatrix4fv(m_transformMatrix, 1, GL_FALSE, &transform[0][0]);
-    glEnableVertexAttribArray(m_positionAttrib);
-    glEnableVertexAttribArray(m_colorAttrib);
-    glUseProgram(m_shaderProgram);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, m_vbo.count() - 8);
     glDrawArrays(GL_TRIANGLE_STRIP, m_vbo.count() - 8, 4);
     glDrawArrays(GL_TRIANGLE_STRIP, m_vbo.count() - 4, 4);
     glDisableVertexAttribArray(m_colorAttrib);
     glDisableVertexAttribArray(m_positionAttrib);
+    HANDLE_GL_ERRORS()
 }

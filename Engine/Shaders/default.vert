@@ -1,11 +1,11 @@
-#version 330
+#version 330 core
 
-in vec4 color;
 in vec4 position;
-out vec4 vertexColor;
+in vec4 solidColor;
 uniform mat4 transform;
+out vec4 vertexColor;
 
 void main() {
     gl_Position = transform * position;
-    vertexColor = color;
+    vertexColor = solidColor;
 }
