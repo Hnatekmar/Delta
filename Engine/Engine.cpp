@@ -34,7 +34,7 @@ void Engine::update() {
     GLuint vao;
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
-    glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
+    glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, -5.0),
                            glm::vec3(0.0f, 0.0f, 0.0f),
                            glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -45,9 +45,11 @@ void Engine::update() {
             100.0f             // Far clipping plane. Keep as little as possible.
     );
     Cube cube;
+    glm::mat4 model = glm::mat4(1.0f);
     bool run = true;
     auto previousFrameTimestamp = SDL_GetTicks();
     glEnable(GL_DEPTH_TEST);
+    float rotationAngle = 0.0f;
     while(run) {
         while(SDL_PollEvent(&event)) {
             if(event.type == SDL_QUIT) run = false;
@@ -56,8 +58,12 @@ void Engine::update() {
         glClearColor(0.0, 0.0, 0.0, 1.0);
         auto current = SDL_GetTicks();
         auto delta = current - previousFrameTimestamp;
+        rotationAngle += 40.0f * (delta / 1000.0);
+        if(rotationAngle > 360) rotationAngle = 0;
+        model = glm::rotate(glm::radians(rotationAngle), glm::vec3(1.0f, 0.0f, 0.0f));
         previousFrameTimestamp = current;
-        m_entityManager.update(delta);
+        cube.draw(projection * view * model);
+        //m_entityManager.update(delta);
         SDL_GL_SwapWindow(m_window);
         HANDLE_GL_ERRORS()
     }
